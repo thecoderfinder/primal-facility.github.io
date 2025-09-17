@@ -95,4 +95,460 @@
         }
         .title {
             text-align: center;
-            font-size: clamp(16px
+            font-size: clamp(16px, 5vw, 24px);
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        .version {
+            text-align: center;
+            font-size: clamp(10px, 3vw, 12px);
+            margin-bottom: 30px;
+        }
+        .link-title {
+            font-size: clamp(14px, 4vw, 18px);
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .instructions {
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-size: clamp(12px, 3vw, 14px);
+        }
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 5px;
+            animation: slideIn 1s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        .warning {
+            background-color: rgba(255,0,0,0.2);
+            padding: 10px;
+            border: 1px solid #ff0000;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: clamp(12px, 3vw, 14px);
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(5px); }
+            50% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+        .pairing-code {
+            display: flex;
+            justify-content: center;
+            gap: clamp(5px, 1.25vw, 10px);
+            margin-bottom: 30px;
+        }
+        .code-input {
+            width: clamp(30px, 8vw, 40px);
+            height: clamp(30px, 8vw, 40px);
+            background-color: #000;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            text-align: center;
+            font-size: clamp(16px, 5vw, 20px);
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: box-shadow 0.3s;
+            animation: glow 1.5s infinite;
+        }
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px #00ff00; }
+            50% { box-shadow: 0 0 20px #00ff00; }
+            100% { box-shadow: 0 0 5px #00ff00; }
+        }
+        .code-input:focus,
+        .code-input:not(:placeholder-shown) {
+            box-shadow: 0 0 15px #00ff00;
+        }
+        .computer-screen {
+            border: 2px solid #00ff00;
+            padding: 10px;
+            margin: 20px 0;
+            background-color: #001100;
+            text-align: left;
+            font-size: clamp(10px, 2.5vw, 12px);
+            max-width: clamp(200px, 50vw, 300px);
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 1s ease-in;
+        }
+        .computer-screen pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        .continue-btn {
+            position: absolute;
+            bottom: clamp(10px, 2.5vw, 20px);
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #000;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: clamp(5px, 1.25vw, 10px) clamp(10px, 2.5vw, 20px);
+            font-size: clamp(12px, 3vw, 16px);
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .continue-btn:hover {
+            background-color: #00ff00;
+            color: #000;
+        }
+        #logout-btn {
+            position: absolute;
+            top: clamp(5px, 1.25vw, 10px);
+            left: clamp(5px, 1.25vw, 10px);
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            padding: clamp(3px, 0.75vw, 5px) clamp(5px, 1.25vw, 10px);
+            font-size: clamp(10px, 2.5vw, 12px);
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+            display: none; /* Hidden until logged in */
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        #camera-feed-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(200px, 50vw, 400px);
+            height: clamp(150px, 37.5vw, 300px);
+            border: 2px solid #00ff00;
+            display: none;
+            position: relative;
+        }
+        #camera-feed {
+            width: 100%;
+            height: 100%;
+        }
+        #camera-buttons {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            gap: 10px;
+        }
+        #camera-buttons button {
+            background-color: #000;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 5px 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        #camera-feed-container:hover #camera-buttons {
+            display: flex;
+        }
+        #error-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0,0,0,0.8);
+            color: #ff0000;
+            padding: 20px;
+            border: 2px solid #ff0000;
+            font-size: clamp(14px, 3.5vw, 18px);
+            text-align: center;
+            display: none;
+            z-index: 15;
+            width: clamp(250px, 62.5vw, 300px);
+            backdrop-filter: blur(5px);
+            animation: popIn 0.3s ease-out;
+        }
+        @keyframes popIn {
+            from { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        #error-message p {
+            margin-bottom: 10px;
+        }
+        #close-error {
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            padding: clamp(3px, 0.75vw, 5px) clamp(5px, 1.25vw, 10px);
+            cursor: pointer;
+            animation: pulse 1.5s infinite;
+        }
+        .blurred {
+            filter: blur(5px);
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">
+        <div id="loading-text">Loading not horizons</div>
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+            <span id="progress-percent">0</span>
+        </div>
+    </div>
+    <div id="error-message">
+        <p>Link is invalid. Time has run out or entered wrong.</p>
+        <button id="close-error">Close</button>
+    </div>
+    <div class="container" id="main-container">
+        <div class="title">PRIMAL FACILITY</div>
+        <div class="version">1.39.2.1713</div>
+        
+        <div class="link-title">LINK YOUR DEVICE</div>
+        
+        <div class="instructions">
+            <ol>
+                <li>Enter Primal Facility on your headset</li>
+                <li>On the lobby computer, click the button that says Link Account to Phone</li>
+                <li>Copy the pairing code below and enter it here</li>
+            </ol>
+        </div>
+        
+        <div class="warning">
+            Do not share this code with anyone, including Primal Games
+        </div>
+        
+        <div class="pairing-code">
+            <input type="text" class="code-input" id="code-input-1" maxlength="1" placeholder="_">
+            <input type="text" class="code-input" id="code-input-2" maxlength="1" placeholder="_">
+            <input type="text" class="code-input" id="code-input-3" maxlength="1" placeholder="_">
+            <input type="text" class="code-input" id="code-input-4" maxlength="1" placeholder="_">
+            <input type="text" class="code-input" id="code-input-5" maxlength="1" placeholder="_">
+        </div>
+        
+        <div class="computer-screen" id="code-display">
+            <pre>
+PAIRING CODE: [WAITING...]
+            </pre>
+        </div>
+        
+        <button class="continue-btn">CONTINUE</button>
+        <button id="logout-btn">LOGOUT</button>
+        <div id="camera-feed-container">
+            <canvas id="camera-feed"></canvas>
+            <div id="camera-buttons">
+                <button onclick="alert('test feature')">Flip Camera</button>
+                <button onclick="alert('test feature')">3rd Person Camera</button>
+                <button onclick="alert('test feature')">1st Person Camera</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="background-sound" autoplay loop>
+        <source src="https://www.soundjay.com/machine/machine-hum-1.mp3" type="audio/mp3">
+    </audio>
+    <audio id="click-sound">
+        <source src="https://www.soundjay.com/button/button-1.mp3" type="audio/mp3">
+    </audio>
+    <audio id="error-sound">
+        <source src="https://www.soundjay.com/beep-sounds/beep-07a.mp3" type="audio/mp3">
+    </audio>
+    <audio id="keypress-sound">
+        <source src="https://www.soundjay.com/keyboard/computer_keyboard_hit_1.mp3" type="audio/mp3">
+    </audio>
+
+    <script>
+        const loadingText = document.getElementById('loading-text');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercent = document.getElementById('progress-percent');
+        let progress = 0;
+
+        function updateProgress(value) {
+            progressBar.style.width = value + '%';
+            progressPercent.textContent = Math.round(value);
+        }
+
+        const phase1Duration = 3000;
+        const phase1Target = 50;
+        const phase1Interval = setInterval(() => {
+            progress += (phase1Target / (phase1Duration / 50));
+            if (progress >= phase1Target) {
+                progress = phase1Target;
+                clearInterval(phase1Interval);
+                loadingText.textContent = 'Loading UI and properties';
+                startPhase2();
+            }
+            updateProgress(progress);
+        }, 50);
+
+        function startPhase2() {
+            const phase2Duration = 2000;
+            const phase2Target = 99;
+            const phase2Interval = setInterval(() => {
+                progress += ((phase2Target - phase1Target) / (phase2Duration / 50));
+                if (progress >= phase2Target) {
+                    progress = phase2Target;
+                    clearInterval(phase2Interval);
+                    loadingText.textContent = 'Loading world';
+                    startPhase3();
+                }
+                updateProgress(progress);
+            }, 50);
+        }
+
+        function startPhase3() {
+            const phase3Duration = 3000;
+            const phase3Target = 100;
+            const phase3Interval = setInterval(() => {
+                progress += ((phase3Target - 99) / (phase3Duration / 50));
+                if (progress >= phase3Target) {
+                    progress = phase3Target;
+                    clearInterval(phase3Interval);
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('main-container').style.display = 'block';
+                    setTimeout(fetchCode, 1000); // Delay fetch to ensure server is ready
+                }
+                updateProgress(progress);
+            }, 50);
+        }
+
+        const backgroundSound = document.getElementById('background-sound');
+        const clickSound = document.getElementById('click-sound');
+        const errorSound = document.getElementById('error-sound');
+        const keypressSound = document.getElementById('keypress-sound');
+        const errorMessage = document.getElementById('error-message');
+        const mainContainer = document.getElementById('main-container');
+        const cameraFeed = document.getElementById('camera-feed');
+        const logoutBtn = document.getElementById('logout-btn');
+        const codeDisplay = document.getElementById('code-display');
+        const cameraFeedContainer = document.getElementById('camera-feed-container');
+
+        let isLoggedIn = false;
+
+        const inputs = document.querySelectorAll('.code-input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                e.target.value = e.target.value.toUpperCase();
+                if (e.target.value.length === 1 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                keypressSound.play();
+            });
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+
+        function fetchCode() {
+            fetch('http://localhost:8080/code')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(data => {
+                    const code = data.trim().toUpperCase();
+                    codeDisplay.innerHTML = `<pre>PAIRING CODE: ${code}</pre>`;
+                })
+                .catch(error => {
+                    console.error('Error fetching code:', error);
+                    codeDisplay.innerHTML = `<pre>PAIRING CODE: [ERROR]</pre>`;
+                });
+        }
+
+        document.querySelector('.continue-btn').addEventListener('click', () => {
+            clickSound.play();
+            const code = Array.from(inputs).map(input => input.value).join('').toUpperCase();
+            if (code.length === 5) {
+                fetch(`http://localhost:8080/validate?code=${code}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error('Validation failed');
+                        return response.text();
+                    })
+                    .then(data => {
+                        if (data.includes('Success')) {
+                            isLoggedIn = true;
+                            logoutBtn.style.display = 'block';
+                            cameraFeedContainer.style.display = 'block';
+                            startCameraFeed();
+                        } else {
+                            errorSound.play();
+                            errorMessage.style.display = 'block';
+                            mainContainer.classList.add('blurred');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        errorSound.play();
+                        errorMessage.style.display = 'block';
+                        mainContainer.classList.add('blurred');
+                    });
+            } else {
+                errorSound.play();
+                errorMessage.style.display = 'block';
+                mainContainer.classList.add('blurred');
+            }
+        });
+
+        document.getElementById('close-error').addEventListener('click', () => {
+            errorMessage.style.display = 'none';
+            mainContainer.classList.remove('blurred');
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            if (isLoggedIn) {
+                clickSound.play();
+                fetch('http://localhost:8080/logout')
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data.includes('Success')) {
+                            isLoggedIn = false;
+                            logoutBtn.style.display = 'none';
+                            cameraFeedContainer.style.display = 'none';
+                            stopCameraFeed();
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        });
+
+        function startCameraFeed() {
+            const ws = new WebSocket('ws://localhost:8080/camera');
+            ws.onmessage = (event) => {
+                const imageData = event.data;
+                const url = URL.createObjectURL(new Blob([imageData], { type: 'image/png' }));
+                cameraFeed.src = url;
+            };
+            ws.onerror = (error) => console.error('WebSocket error:', error);
+        }
+
+        function stopCameraFeed() {
+            cameraFeed.src = '';
+        }
+    </script>
+</body>
+</html>
