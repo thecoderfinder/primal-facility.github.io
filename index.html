@@ -1,347 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Primal Facility Companion</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #000;
-            color: #00ff00;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            overflow: hidden;
-            height: 100vh;
-        }
-        #loading {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-            flex-direction: column;
-        }
-        #loading-text {
-            font-size: clamp(16px, 5vw, 24px);
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            animation: blink 1s infinite;
-        }
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-        #progress-container {
-            width: 80%;
-            height: 20px;
-            background: #333;
-            border: 2px solid #00ff00;
-            position: relative;
-            overflow: hidden;
-        }
-        #progress-bar {
-            height: 100%;
-            background: #00ff00;
-            width: 0%;
-            animation: slide 1s ease-in-out infinite alternate;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        @keyframes slide {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(100%); }
-        }
-        #progress-percent {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #00ff00;
-            font-size: clamp(10px, 2.5vw, 14px);
-            line-height: 20px;
-            animation: fadeIn 0.5s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-            display: none;
-        }
-        .title {
-            text-align: center;
-            font-size: clamp(16px, 5vw, 24px);
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            animation: bounce 2s infinite;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-        .player-list {
-            height: 70vh;
-            overflow-y: auto;
-            border: 2px solid #00ff00;
-            padding: 10px;
-            background-color: #001100;
-        }
-        .player-item {
-            padding: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        .player-item:hover {
-            background-color: #003300;
-        }
-        #password-modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #000;
-            border: 2px solid #00ff00;
-            padding: 20px;
-            z-index: 20;
-        }
-        #password-input {
-            width: 100%;
-            background-color: #000;
-            border: 2px solid #00ff00;
-            color: #00ff00;
-            padding: 5px;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        #submit-password, #close-modal {
-            background-color: #000;
-            color: #00ff00;
-            border: 2px solid #00ff00;
-            padding: 5px 10px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-        #camera-feed-container {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: clamp(200px, 50vw, 400px);
-            height: clamp(150px, 37.5vw, 300px);
-            border: 2px solid #00ff00;
-        }
-        #camera-feed {
-            width: 100%;
-            height: 100%;
-        }
-        #error-message {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0,0,0,0.8);
-            color: #ff0000;
-            padding: 20px;
-            border: 2px solid #ff0000;
-            font-size: clamp(14px, 3.5vw, 18px);
-            text-align: center;
-            z-index: 15;
-            width: clamp(250px, 62.5vw, 300px);
-            backdrop-filter: blur(5px);
-            animation: popIn 0.3s ease-out;
-        }
-        @keyframes popIn {
-            from { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-        #close-error {
-            background-color: #ff0000;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Primal Facility - Link</title>
+<style>
+  :root {
+    --neon: #00ff4d;
+    --neon-weak: rgba(0,255,77,0.16);
+    --bg-dark: #000;
+    --danger: #bf1f1f;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:"Courier New",monospace;background:#000;color:var(--neon);-webkit-font-smoothing:antialiased}
+  body{display:flex;justify-content:center;padding:20px 12px}
+
+  /* Grid background */
+  .page {
+    width:100%;max-width:1200px; min-height:calc(100vh - 40px); position:relative;
+    background-image:
+      linear-gradient(0deg, rgba(0,0,0,0) 19px, rgba(0,20,0,0.06) 19px, rgba(0,0,0,0) 20px),
+      linear-gradient(90deg, rgba(0,0,0,0) 19px, rgba(0,20,0,0.06) 19px, rgba(0,0,0,0) 20px);
+    background-size:20px 20px;
+    padding:26px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+
+  /* Loading */
+  #loading-screen {
+    position:fixed; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:linear-gradient(180deg, rgba(0,0,0,1), rgba(0,0,0,0.95)); z-index:1200;
+  }
+  #loading-text{font-size:clamp(16px,3.2vw,26px); text-transform:uppercase; text-shadow:0 0 8px var(--neon); margin-bottom:14px}
+  #progress-container{width:60%;max-width:820px;border:2px solid var(--neon);height:18px;border-radius:4px; overflow:hidden; box-shadow:0 0 12px var(--neon-weak)}
+  #progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--neon), #00cc3a); transition:width 0.08s linear}
+  #progress-percent{margin-top:8px; font-size:14px; text-shadow:0 0 8px var(--neon)}
+
+  /* Top-left logout */
+  #logoutBtn {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #200000;
+    border:2px solid var(--danger);
+    color: #fff;
+    padding:6px 10px;
+    border-radius:6px;
+    display:none;
+    cursor:pointer;
+    z-index:800;
+  }
+
+  /* Header */
+  .title { text-align:center; margin-top:6px; font-size:clamp(18px,3.2vw,32px); letter-spacing:4px; text-transform:uppercase; text-shadow:0 0 12px var(--neon) }
+  .sub { text-align:center; color:rgba(0,255,77,0.65); margin-top:4px; }
+
+  /* Main layout */
+  .main { padding:18px 8px 40px; display:none; }
+  .instructions { width:72%; max-width:820px; margin:18px auto; text-align:left; line-height:1.6; color:var(--neon); }
+  .instructions ol{ margin:0 0 0 18px; }
+
+  .warning { width:72%; max-width:820px; margin:16px auto; padding:12px; background:rgba(191,31,31,0.08); border:1px solid rgba(191,31,31,0.55); color:#ffd6d6; font-weight:700; }
+
+  .code-row { display:flex; justify-content:center; gap:12px; margin:12px 0; }
+  .code-input { width:62px; height:62px; background:transparent; color:var(--neon); border:2px solid var(--neon); border-radius:6px; font-size:28px; text-align:center; text-transform:uppercase; outline:none; box-shadow:0 0 12px rgba(0,255,77,0.06) inset }
+  .code-input:focus{ box-shadow:0 0 22px rgba(0,255,77,0.14); transform:scale(1.04) }
+
+  .pairing-box { margin:12px auto; width:320px; max-width:78%; padding:12px; border:2px solid var(--neon); background:rgba(0,10,0,0.35); text-align:left; box-shadow:0 0 10px rgba(0,255,77,0.03) }
+
+  .btn { margin-top:20px; display:inline-block; padding:10px 28px; border:2px solid var(--neon); color:var(--neon); background:transparent; cursor:pointer; text-transform:uppercase; border-radius:6px; font-weight:700 }
+  .btn:hover{ background:var(--neon); color:#000; transition:all .12s }
+
+  /* Camera area */
+  .camera-wrap { width:360px; max-width:86%; margin:18px auto; border:2px solid var(--neon); background:#001100; padding:8px; border-radius:8px; text-align:center }
+  #cameraVideo { width:100%; height:auto; background:#000; display:block; border-radius:4px; }
+
+  .cam-controls { display:flex; gap:8px; justify-content:center; margin-top:8px; align-items:center }
+  .cam-controls input[type="range"]{ width:140px }
+
+  /* Error popup */
+  #errorPopup{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,0.85); z-index:1100 }
+  #errorBox{ background:#220; border:2px solid var(--danger); color:var(--danger); padding:14px; border-radius:8px; text-align:center }
+
+  /* Shake animation */
+  @keyframes shake { 0%{transform:translateX(0)}12%{transform:translateX(-10px)}25%{transform:translateX(8px)}37%{transform:translateX(-6px)}50%{transform:translateX(6px)}62%{transform:translateX(-4px)}75%{transform:translateX(4px)}100%{transform:translateX(0)} }
+  .shake{ animation:shake 650ms ease }
+</style>
 </head>
 <body>
-    <div id="loading">
-        <div id="loading-text">Loading not horizons</div>
-        <div id="progress-container">
-            <div id="progress-bar"></div>
-            <span id="progress-percent">0</span>
+  <button id="logoutBtn">Logout</button>
+
+  <!-- Loading screen -->
+  <div id="loading-screen" aria-hidden="false">
+    <div id="loading-text">Loading UI...</div>
+    <div id="progress-container"><div id="progress-bar"></div></div>
+    <div id="progress-percent">0%</div>
+  </div>
+
+  <div class="page">
+    <div class="main" id="main">
+      <div class="title">PRIMAL FACILITY</div>
+      <div class="sub">1.39.2.1713</div>
+
+      <div class="instructions" role="region" aria-label="instructions">
+        <ol>
+          <li>Enter Primal Facility on your headset</li>
+          <li>On the lobby computer, click the button that says <strong>Link Account to Phone</strong></li>
+          <li>Copy the pairing code below and enter it here</li>
+        </ol>
+      </div>
+
+      <div class="warning">Do not share this code with anyone, including Primal Games</div>
+
+      <div class="code-row" aria-label="enter pairing code">
+        <input id="c1" class="code-input" maxlength="1" inputmode="text" autocomplete="off" />
+        <input id="c2" class="code-input" maxlength="1" inputmode="text" autocomplete="off" />
+        <input id="c3" class="code-input" maxlength="1" inputmode="text" autocomplete="off" />
+        <input id="c4" class="code-input" maxlength="1" inputmode="text" autocomplete="off" />
+      </div>
+
+      <div class="pairing-box" id="pairingBox">PAIRING CODE: [WAITING...]</div>
+
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <button class="btn" id="continueBtn">Continue</button>
+      </div>
+
+      <!-- Camera preview area -->
+      <div class="camera-wrap" id="cameraWrap">
+        <video id="cameraVideo" controls muted playsinline></video>
+        <div class="cam-controls">
+          <button class="btn" id="camFullscreen">Fullscreen</button>
+          <label style="font-size:12px;margin-left:8px">Volume</label>
+          <input type="range" id="camVolume" min="0" max="1" step="0.01" value="0.75">
         </div>
+      </div>
     </div>
-    <div id="error-message">
-        <p>Invalid password or connection error.</p>
-        <button id="close-error">Close</button>
+  </div>
+
+  <!-- Toasts + Error popup -->
+  <div id="toasts" aria-live="polite"></div>
+
+  <div id="errorPopup" role="dialog" aria-hidden="true">
+    <div id="errorBox">
+      <div style="font-weight:700;margin-bottom:8px">Link is invalid</div>
+      <div style="margin-bottom:10px">Link is invalid, time has run out, or code is wrong.</div>
+      <button class="btn" onclick="closePopup()" style="border-color:var(--danger); color:var(--danger)">Close</button>
     </div>
-    <div class="container" id="main-container">
-        <div class="title">PRIMAL FACILITY</div>
-        <div class="player-list" id="player-list"></div>
-        <div id="password-modal">
-            <input type="password" id="password-input" placeholder="Enter password">
-            <button id="submit-password">Submit</button>
-            <button id="close-modal">Close</button>
-        </div>
-        <div id="camera-feed-container">
-            <canvas id="camera-feed"></canvas>
-        </div>
-    </div>
+  </div>
 
-    <audio id="background-sound" autoplay loop>
-        <source src="https://www.soundjay.com/machine/machine-hum-1.mp3" type="audio/mp3">
-    </audio>
-    <audio id="click-sound">
-        <source src="https://www.soundjay.com/button/button-1.mp3" type="audio/mp3">
-    </audio>
-    <audio id="error-sound">
-        <source src="https://www.soundjay.com/beep-sounds/beep-07a.mp3" type="audio/mp3">
-    </audio>
+  <!-- Audio -->
+  <audio id="clickSound" preload="auto" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+  <audio id="successSound" preload="auto" src="https://actions.google.com/sounds/v1/cartoon/clang.ogg"></audio>
+  <audio id="errorSound" preload="auto" src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"></audio>
 
-    <script>
-        const loadingText = document.getElementById('loading-text');
-        const progressBar = document.getElementById('progress-bar');
-        const progressPercent = document.getElementById('progress-percent');
-        let progress = 0;
+<script>
+/* ================= Loading sequence ================= */
+const steps = [
+  { text: "Loading UI...", ms: 3000 },
+  { text: "Loading background requirements...", ms: 3000 },
+  { text: "Loading world...", ms: 2000 }
+];
+let stepIndex = 0;
+let totalProgress = 0;
+const progressBar = document.getElementById('progress-bar');
+const progressPercent = document.getElementById('progress-percent');
+const loadingText = document.getElementById('loading-text');
+function runStep(){
+  if(stepIndex >= steps.length){
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+    return;
+  }
+  const s = steps[stepIndex];
+  loadingText.textContent = s.text;
+  const from = totalProgress;
+  const to = totalProgress + 100 / steps.length;
+  const start = performance.now();
+  function frame(now){
+    const t = Math.min((now - start) / s.ms, 1);
+    const value = from + (to - from) * t;
+    progressBar.style.width = value + '%';
+    progressPercent.textContent = Math.floor(value) + '%';
+    if(t < 1) requestAnimationFrame(frame);
+    else { totalProgress = to; stepIndex++; setTimeout(runStep, 200); }
+  }
+  requestAnimationFrame(frame);
+}
+runStep();
 
-        function updateProgress(value) {
-            progressBar.style.width = value + '%';
-            progressPercent.textContent = Math.round(value);
-        }
+/* ================= Inputs & login ================= */
+const inputs = Array.from(document.querySelectorAll('.code-input'));
+inputs.forEach((el, i) => {
+  el.addEventListener('input', () => {
+    el.value = el.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+    if(el.value && i < inputs.length - 1) inputs[i+1].focus();
+  });
+  el.addEventListener('keydown', (e) => {
+    if(e.key === 'Backspace' && !el.value && i > 0) inputs[i-1].focus();
+  });
+});
 
-        const phase1Duration = 3000;
-        const phase1Target = 50;
-        const phase1Interval = setInterval(() => {
-            progress += (phase1Target / (phase1Duration / 50));
-            if (progress >= phase1Target) {
-                progress = phase1Target;
-                clearInterval(phase1Interval);
-                loadingText.textContent = 'Loading UI and properties';
-                startPhase2();
-            }
-            updateProgress(progress);
-        }, 50);
+const VALID_CODE = 'ABCD'; // Replace later with real server check
+const clickSound = document.getElementById('clickSound');
+const successSound = document.getElementById('successSound');
+const errorSound = document.getElementById('errorSound');
 
-        function startPhase2() {
-            const phase2Duration = 2000;
-            const phase2Target = 99;
-            const phase2Interval = setInterval(() => {
-                progress += ((phase2Target - phase1Target) / (phase2Duration / 50));
-                if (progress >= phase2Target) {
-                    progress = phase2Target;
-                    clearInterval(phase2Interval);
-                    loadingText.textContent = 'Loading world';
-                    startPhase3();
-                }
-                updateProgress(progress);
-            }, 50);
-        }
+document.getElementById('continueBtn').addEventListener('click', () => {
+  safePlay(clickSound);
+  validateCode();
+});
 
-        function startPhase3() {
-            const phase3Duration = 3000;
-            const phase3Target = 100;
-            const phase3Interval = setInterval(() => {
-                progress += ((phase3Target - 99) / (phase3Duration / 50));
-                if (progress >= phase3Target) {
-                    progress = phase3Target;
-                    clearInterval(phase3Interval);
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('main-container').style.display = 'block';
-                    fetchPlayers();
-                }
-                updateProgress(progress);
-            }, 50);
-        }
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  safePlay(clickSound);
+  localStorage.removeItem('primal_logged_in');
+  document.getElementById('logoutBtn').style.display = 'none';
+  toast('Logged out', 'warn', 1400);
+});
 
-        function fetchPlayers() {
-            fetch('http://localhost:8080/players')
-                .then(response => {
-                    if (!response.ok) throw new Error('Failed to fetch players');
-                    return response.json();
-                })
-                .then(data => {
-                    const playerList = document.getElementById('player-list');
-                    data.players.forEach(player => {
-                        const playerItem = document.createElement('div');
-                        playerItem.className = 'player-item';
-                        playerItem.textContent = player.playerName;
-                        playerItem.onclick = () => showPasswordModal(player.playerName);
-                        playerList.appendChild(playerItem);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching players:', error);
-                    document.getElementById('error-message').style.display = 'block';
-                });
-        }
+function validateCode(){
+  const code = inputs.map(i => i.value || '').join('');
+  if(code.toUpperCase() === VALID_CODE){
+    safePlay(successSound);
+    localStorage.setItem('primal_logged_in', '1');
+    document.getElementById('logoutBtn').style.display = 'block';
+    toast('Device linked successfully');
+    return;
+  }
+  safePlay(errorSound);
+  showError('Link is invalid, time has run out, or code is wrong.');
+}
 
-        function showPasswordModal(playerName) {
-            const modal = document.getElementById('password-modal');
-            const passwordInput = document.getElementById('password-input');
-            modal.style.display = 'block';
-            document.getElementById('submit-password').onclick = () => validatePassword(playerName, passwordInput.value);
-            document.getElementById('close-modal').onclick = () => {
-                modal.style.display = 'none';
-                passwordInput.value = '';
-            };
-        }
+/* ================= Camera controls ================= */
+const camVideo = document.getElementById('cameraVideo');
+const camFullscreen = document.getElementById('camFullscreen');
+const camVolume = document.getElementById('camVolume');
 
-        function validatePassword(playerName, password) {
-            fetch('http://localhost:8080/validate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ playerName: playerName, password: password })
-            })
-            .then(response => {
-                if (!response.ok) throw new Error('Validation failed');
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    document.getElementById('password-modal').style.display = 'none';
-                    document.getElementById('camera-feed-container').style.display = 'block';
-                    // Placeholder for camera feed (replace with WebSocket)
-                    document.getElementById('camera-feed').textContent = `Viewing ${data.cameraOwner}'s camera`;
-                } else {
-                    document.getElementById('error-message').style.display = 'block';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('error-message').style.display = 'block';
-            });
-            document.getElementById('password-input').value = '';
-        }
+function setCameraStream(url){
+  if(!url) return;
+  camVideo.src = url;
+  camVideo.load();
+}
 
-        document.getElementById('close-error').addEventListener('click', () => {
-            document.getElementById('error-message').style.display = 'none';
-        });
-    </script>
+camFullscreen.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    camVideo.requestFullscreen?.().catch(()=>{});
+  } else {
+    document.exitFullscreen?.();
+  }
+});
+camVolume.addEventListener('input', () => {
+  camVideo.muted = false;
+  camVideo.volume = Number(camVolume.value);
+});
+
+/* ================= Utility ================= */
+function toast(text, kind='success', timeout=3000){
+  const toasts = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'toast' + (kind === 'warn' ? ' warn' : '');
+  el.textContent = text;
+  toasts.appendChild(el);
+  setTimeout(()=> { el.remove(); }, timeout);
+}
+
+function showError(msg){
+  document.getElementById('errorBox').querySelector('div:nth-child(2)').textContent = msg;
+  document.getElementById('errorPopup').style.display = 'flex';
+}
+
+function closePopup(){
+  document.getElementById('errorPopup').style.display = 'none';
+}
+
+function safePlay(a){
+  if(!a) return;
+  try{ a.currentTime = 0; a.play().catch(()=>{}); }catch(e){}
+}
+</script>
 </body>
 </html>
